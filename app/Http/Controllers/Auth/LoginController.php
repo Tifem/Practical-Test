@@ -56,8 +56,6 @@ class LoginController extends Controller
                 break;
 
             
-
-
             default:
                 $this->redirectTo = '/logout';
                 return $this->redirectTo;

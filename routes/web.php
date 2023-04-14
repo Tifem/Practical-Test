@@ -20,9 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-        Route::group(['prefix' => 'admin'], function () {
-            Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-            Route::group(['prefix' => 'user'], function () {
+    Route::group(['prefix' => 'admin'], function () {
+        Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::group(['prefix' => 'user'], function () {
             Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');
             Route::get('/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('delete_users');
             Route::post('/update', [App\Http\Controllers\UserController::class, 'updateUser'])->name('update_user');
@@ -38,7 +38,9 @@ Route::group(['middleware' => ['auth']], function(){
             Route::get('/details', [App\Http\Controllers\ActivityController::class, 'details'])->name('activity_details');
             Route::post('/create_activities', [App\Http\Controllers\ActivityController::class, 'add'])->name('create_activities');
         });
-  
+    });
+    Route::group(['prefix' => 'member'], function () {
+        Route::get('/', [App\Http\Controllers\MemberController::class, 'index'])->name('member_home');
     });
     Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 });
