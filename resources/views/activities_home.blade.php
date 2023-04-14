@@ -126,7 +126,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title modalTitle" id="exampleModalLabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
@@ -152,10 +152,6 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Date</label>
                         <input type="date" name="date" id="date" class="form-control" required >
-                    </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Image</label>
-                        <input type="file" name="image" id="image" class="form-control-file image" required accept=".pdf,.png,.jpg,.jpeg">
                     </div>
                 
                 </div>
@@ -267,7 +263,7 @@
                 $('#title').val(data.title);
                 $('#description').val(data.description);
                 $('#date').val(data.date);
-                $('#image').val(data.image);
+                $('.modalTitle').html(data.title);
             })
         });
 

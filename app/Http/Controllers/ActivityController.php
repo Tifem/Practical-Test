@@ -82,8 +82,26 @@ class ActivityController extends Controller
      */
     public function updateActivity(Request $request)
     { 
-        $input = $request->all();
-        dd($input);
+        try {
+
+            $activity = Activity::find($request->id);
+           
+                $input = $request->all();
+                
+                $activity->update($request->all());
+                return api_request_response(
+                    'ok',
+                    'Record saved successfully!',
+                    success_status_code(),
+                );
+
+        } catch (\Exception $exception) {
+            return api_request_response(
+                'error',
+                $exception->getMessage(),
+                bad_response_status_code()
+            );
+        }
 
     }
 
