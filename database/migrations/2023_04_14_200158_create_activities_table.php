@@ -16,10 +16,11 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->text('description');
             $table->string('image');
             $table->string('user_id');
             $table->string('is_global');
+            $table->date('date');
             $table->timestamps();
         });
     }

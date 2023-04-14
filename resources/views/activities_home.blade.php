@@ -151,11 +151,11 @@
 
                     <div class="mb-3">
                         <label for="image" class="form-label">Date</label>
-                        <input type="date" name="date" id="" class="form-control" required >
+                        <input type="date" name="date" id="date" class="form-control" required >
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
-                        <input type="file" name="image" id="image" class="form-control" required accept=".pdf,.png,.jpg,.jpeg">
+                        <input type="file" name="image" id="image" class="form-control-file image" required accept=".pdf,.png,.jpg,.jpeg">
                     </div>
                 
                 </div>
@@ -266,6 +266,7 @@
                 $('#idUser').val(data.id);
                 $('#title').val(data.title);
                 $('#description').val(data.description);
+                $('#date').val(data.date);
                 $('#image').val(data.image);
             })
         });
