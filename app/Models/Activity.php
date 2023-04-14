@@ -14,6 +14,12 @@ class Activity extends Model
         'description',
         'image',
         'user_id',
-        'is_global'
+        'is_global',
+        'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id')->withDefault(['name' => '']);
+    }
 }

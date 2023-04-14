@@ -39,6 +39,9 @@
                                     <th>S/N</th>
                                     <th>Title</th>
                                     <th>Description</th>
+                                    <th>Date</th>
+                                    <th>Global</th>
+                                    <th>User</th>
                                     <th>Image</th>
                                     <th>Action</th>
                                 </tr>
@@ -49,7 +52,28 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $activity->title }}</td>                                   
                                     <td>{{ $activity->description }}</td>                                    
-                                    <td>{{ $activity->image }}</td>                                    
+                                    <td>{{ $activity->date }}</td>                                    
+                                    <td>
+                                        @if($activity->is_global == 1 )
+                                            Yes
+                                        @else
+                                            No
+                                        @endif
+                                    </td>                                    
+                                    <td>
+                                        @if($activity->is_global == 1 )
+                                            All
+                                        @else
+                                            {{$activity->user->name}}
+                                        @endif
+                                    </td>                                   
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-light rounded p-1 me-2">
+                                                <img src="{{asset("file/$activity->image")}}" alt="" class="img-fluid d-block">
+                                            </div>
+                                        </div>
+                                    </td>                                    
                                     <td>
                                         <div class="d-flex gap-2">
                                             <div class="edit">
@@ -126,6 +150,10 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="image" class="form-label">Date</label>
+                        <input type="date" name="date" id="" class="form-control" required >
+                    </div>
+                    <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
                         <input type="file" name="image" id="image" class="form-control" required accept=".pdf,.png,.jpg,.jpeg">
                     </div>
@@ -147,7 +175,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title" id="exampleModalLabel">Create Activity</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
@@ -169,7 +197,10 @@
                         <label for="description" class="form-label">Description</label>
                         <textarea name="description" id="description" cols="" rows="" class="form-control"></textarea>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Date</label>
+                        <input type="date" name="date" id="" class="form-control" required >
+                    </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
                         <input type="file" name="image" id="image" class="form-control">
@@ -177,7 +208,16 @@
 
                     <div class="mb-3">
                         <label for="is_global" class="form-label">Global</label>
-                        <input type="checkbox" name="is_global" id="" class="">
+                        <input type="checkbox" name="is_global" id="" class="isGlobal">
+                    </div>
+                    <div class="mb-3" id="userDiv">
+                        <label for="is_global" class="form-label">Choose User</label>
+                        <select class="form-select mb-3" aria-label="Default select example" id="userId" name="user_id" required>
+                            <option selected="" value="">Select User </option>
+                            @foreach ($users as $user)                             
+                                <option value="{{$user->id}}">{{$user->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                 
@@ -206,6 +246,19 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $(".isGlobal").on("click",function(e){
+            if($(this).is(':checked') == true){
+                $("#userId").val("");
+                $('#userId').prop('required', false);
+                $("#userDiv").hide()
+            }else{
+                $("#userDiv").show()
+                $("#userId").val("");
+                $('#userId').prop('required', true);
+            }
+
+        })
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
             $.get('{{ route('activity_details') }}?id=' + id, function(data) {

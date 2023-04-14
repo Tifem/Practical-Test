@@ -5,6 +5,7 @@ use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
 use App\Models\Activity;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,9 @@ class ActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   public function index(Request $request){
+    public function index(Request $request){
         $data['activities'] = Activity::all();
+        $data['users'] = User::where('user_type', 'member')->get();
         return view('activities_home', $data);
     }
 
@@ -28,30 +30,34 @@ class ActivityController extends Controller
     public function add(Request $request)
     {
         try{
-        $extensions = [
-            'jpg' => 'jpeg.png',
-            'png' => 'png.png',
-            'pdf' => 'pdfdocument.png',
-            'doc' => 'wordicon.jpg',
-        ];
+            $extensions = [
+                'jpg' => 'jpeg.png',
+                'png' => 'png.png',
+                'pdf' => 'pdfdocument.png',
+                'doc' => 'wordicon.jpg',
+            ];
 
 
-        $input = $request->all();
+            $input = $request->all();
+            if ($request->has('image')) {
+                $input['image'] = $pic =  time() . '.' . $request->image->extension();
+                $request->image->move(public_path('file'), $pic);
+            }
+            if($request->is_global){
+                $input['is_global'] = 1;
+                $input['user_id'] = 1;
+            }else{
+                $input['is_global'] = 0;
+                $input['user_id'] = $request->user_id;
+            }
+            $user = Activity::create($input);
+            
+            return redirect()->back()->with('message', 'Activity created successfully');
 
-        
-            $DAinput["image"] = $imageName = time() . '.' . $request->image->extension();
-            // dd('here');
-            $request->image->move(public_path('file'), $imageName);
+        } catch (\Exception $exception) {
 
-        $input['image'] = $imageName;
-        $input['user_id'] = Auth::user()->id;
-        $user = Activity::create($input);
-        return redirect()->back()->with('message', 'Activity created successfully');
-
-    } catch (\Exception $exception) {
-
-        return redirect()->back()->withErrors(['exception' => $exception->getMessage()]);
-    }
+            return redirect()->back()->withErrors(['exception' => $exception->getMessage()]);
+        }
         
     }
 
