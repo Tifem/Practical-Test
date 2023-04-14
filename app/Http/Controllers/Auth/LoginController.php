@@ -44,7 +44,7 @@ class LoginController extends Controller
         switch(Auth::user()->user_type){
             case 'Admin':
 
-                    $this->redirectTo = 'admin';
+                    $this->redirectTo = '/admin';
             return $this->redirectTo;
                 break;
 
