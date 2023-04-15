@@ -39,19 +39,19 @@
                             <div class="navbar-brand-box horizontal-logo">
                                 <a href="index.html" class="logo logo-dark">
                                     <span class="logo-sm">
-                                        <img src="assets/images/logo-sm.png" alt="" height="22">
+                                        <img src="{{asset('assets/images/logo-sm.png')}}" alt="" height="22">
                                     </span>
                                     <span class="logo-lg">
-                                        <img src="assets/images/logo-dark.png" alt="" height="17">
+                                        <img src="{{asset('assets/images/logo-dark.png')}}" alt="" height="17">
                                     </span>
                                 </a>
             
                                 <a href="index.html" class="logo logo-light">
                                     <span class="logo-sm">
-                                        <img src="assets/images/logo-sm.png" alt="" height="22">
+                                        <img src="{{asset('assets/images/logo-sm.png')}}" alt="" height="22">
                                     </span>
                                     <span class="logo-lg">
-                                        <img src="assets/images/logo-light.png" alt="" height="17">
+                                        <img src="{{asset('assets/images/logo-light.png')}}" alt="" height="17">
                                     </span>
                                 </a>
                             </div>
@@ -117,7 +117,7 @@
                                         <div class="notification-list">
                                             <!-- item -->
                                             <a href="javascript:void(0);" class="d-flex dropdown-item notify-item py-2">
-                                                <img src="assets/images/users/avatar-2.jpg" class="me-3 rounded-circle avatar-xs"
+                                                <img src="{{asset('assets/images/users/avatar-2.jpg')}}" class="me-3 rounded-circle avatar-xs"
                                                     alt="user-pic">
                                                 <div class="flex-1">
                                                     <h6 class="m-0">Angela Bernier</h6>
@@ -126,7 +126,7 @@
                                             </a>
                                             <!-- item -->
                                             <a href="javascript:void(0);" class="d-flex dropdown-item notify-item py-2">
-                                                <img src="assets/images/users/avatar-3.jpg" class="me-3 rounded-circle avatar-xs"
+                                                <img src="{{asset('assets/images/users/avatar-3.jpg')}}" class="me-3 rounded-circle avatar-xs"
                                                     alt="user-pic">
                                                 <div class="flex-1">
                                                     <h6 class="m-0">David Grasso</h6>
@@ -135,7 +135,7 @@
                                             </a>
                                             <!-- item -->
                                             <a href="javascript:void(0);" class="d-flex dropdown-item notify-item py-2">
-                                                <img src="assets/images/users/avatar-5.jpg" class="me-3 rounded-circle avatar-xs"
+                                                <img src="{{asset('assets/images/users/avatar-5.jpg')}}" class="me-3 rounded-circle avatar-xs"
                                                     alt="user-pic">
                                                 <div class="flex-1">
                                                     <h6 class="m-0">Mike Bunch</h6>
@@ -262,7 +262,7 @@
                                 <div class="collapse menu-dropdown" id="sidebarApps">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="apps-calendar.html" class="nav-link" data-key="t-calendar"> Activity </a>
+                                            <a href="{{route('activity_home')}}" class="nav-link" data-key="t-calendar"> Activity </a>
                                         </li>
                                        
                                     </ul>
@@ -293,11 +293,11 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Velzon.
+                                <script>document.write(new Date().getFullYear())</script> 
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">
-                                    Design & Develop by Themesbrand
+                                    {{-- Design & Develop by Themesbrand --}}
                                 </div>
                             </div>
                         </div>
@@ -321,6 +321,7 @@
         
 
         <!-- JAVASCRIPT -->
+        <script src="{{asset('assets/js/jquery/jquery.min.js')}}"></script>
         <script src="{{asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
         <script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
         <script src="{{asset('assets/libs/node-waves/waves.min.js')}}"></script>
@@ -336,6 +337,9 @@
         <script src="{{asset('assets/libs/list.js/list.min.js')}}"></script>
         <script src="{{asset('assets/libs/list.pagination.js/list.pagination.min.js')}}"></script>
         <script src="{{asset('assets/js/pages/listjs.init.js')}}"></script>
+        <script src="{{ asset('js\requestController.js') }}"></script>
+        <script src="{{ asset('js\formController.js') }}"></script>
+        <script src="{{ asset('js/sweetalert/dist/sweetalert.min.js') }}"></script>
 
         <!-- App js -->
         <script src="{{asset('assets/js/app.js')}}"></script>

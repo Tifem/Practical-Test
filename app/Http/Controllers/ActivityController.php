@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use function App\Helpers\api_request_response;
+use function App\Helpers\bad_response_status_code;
+use function App\Helpers\success_status_code;
 use App\Models\Activity;
+use Auth;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
@@ -12,9 +15,9 @@ class ActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+   public function index(Request $request){
+        $data['activities'] = Activity::all();
+        return view('activities_home', $data);
     }
 
     /**
@@ -22,9 +25,34 @@ class ActivityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function add(Request $request)
     {
-        //
+        try{
+        $extensions = [
+            'jpg' => 'jpeg.png',
+            'png' => 'png.png',
+            'pdf' => 'pdfdocument.png',
+            'doc' => 'wordicon.jpg',
+        ];
+
+
+        $input = $request->all();
+
+        
+            $DAinput["image"] = $imageName = time() . '.' . $request->image->extension();
+            // dd('here');
+            $request->image->move(public_path('file'), $imageName);
+
+        $input['image'] = $imageName;
+        $input['user_id'] = Auth::user()->id;
+        $user = Activity::create($input);
+        return redirect()->back()->with('message', 'Activity created successfully');
+
+    } catch (\Exception $exception) {
+
+        return redirect()->back()->withErrors(['exception' => $exception->getMessage()]);
+    }
+        
     }
 
     /**
@@ -33,9 +61,11 @@ class ActivityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function details(Request $request)
     {
-        //
+        $user = Activity::where('id', $request->id)->first();
+
+        return response()->json($user);
     }
 
     /**
@@ -44,9 +74,10 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function show(Activity $activity)
-    {
-        //
+    public function updateActivity(Request $request)
+    { 
+       
+
     }
 
     /**
@@ -78,8 +109,14 @@ class ActivityController extends Controller
      * @param  \App\Models\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Activity $activity)
+    public function delete(Request $request)
     {
-        //
+        $id = $request->id;
+        $activity = Activity::find($id);
+        // dd($customer);
+        $activity->delete();
+
+        return redirect()->back()->with('message', 'Activity deleted successfully');
     }
+    
 }

@@ -18,7 +18,7 @@
                     <div class="row g-4 mb-3">
                         <div class="col-sm-auto">
                             <div>
-                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add User</button>
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add Activity</button>
                             </div>
                         </div>
                         <div class="col-sm">
@@ -37,25 +37,27 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>S/N</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class="list form-check-all">
-                                @foreach ($users as $user)
+                                @foreach ($activities as $activity)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $user->name }}</td>                                   
-                                    <td>{{ $user->email }}</td>                                    
+                                    <td>{{ $activity->title }}</td>                                   
+                                    <td>{{ $activity->description }}</td>                                    
+                                    <td>{{ $activity->image }}</td>                                    
                                     <td>
                                         <div class="d-flex gap-2">
                                             <div class="edit">
                                                 <button class="btn btn-sm btn-success edit-item-btn edit-user" id=""
-                                                data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+                                                data-id="{{ $activity->id }}" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                                             </div>
                                             <div class="remove">
-                                                <button class="btn btn-sm btn-danger remove-item-btn" data-id="{{ $user->id }}" id="deleteRecord">Remove</button>
+                                                <button class="btn btn-sm btn-danger remove-item-btn" data-id="{{ $activity->id }}" id="deleteRecord">Remove</button>
                                             </div>
                                         </div>
                                     </td>
@@ -104,7 +106,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            <form method="Post" id="frm_main">
+            <form method="Post" id="frm_main" enctype="multipart/form-data" >
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="id" id="idUser">
@@ -114,21 +116,25 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="nameDetail" class="form-control" placeholder="Enter Name" name="name" required />
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" id="title" class="form-control" placeholder="Enter Title" name="title" required />
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="emailDetail" class="form-control" placeholder="Enter Email" name="email" required />
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" cols="" rows="" class="form-control" required></textarea>
                     </div>
 
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" name="image" id="image" class="form-control" required accept=".pdf,.png,.jpg,.jpeg">
+                    </div>
                 
                 </div>
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="edit-btn">Save</button>
+                        <button type="submit" class="btn btn-success" id="edit-btn">Update</button>
                     </div>
                 </div>
             </form>
@@ -145,7 +151,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            <form method="Post" action="{{route('create_user')}}">
+            <form method="Post" action="{{route('create_activities')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
 
@@ -155,18 +161,23 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="Enter Name" name="name" required />
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" id="title" class="form-control" placeholder="Enter Title" name="title" required />
                     </div>
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email" required />
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" cols="" rows="" class="form-control"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control"  placeholder="Enter Password" name="password" required />
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" name="image" id="image" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="is_global" class="form-label">Global</label>
+                        <input type="checkbox" name="is_global" id="" class="">
                     </div>
 
                 
@@ -197,11 +208,12 @@
         });
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
-            $.get('{{ route('user_details') }}?id=' + id, function(data) {
+            $.get('{{ route('activity_details') }}?id=' + id, function(data) {
                 // alert('hhgf');
                 $('#idUser').val(data.id);
-                $('#emailDetail').val(data.email);
-                $('#nameDetail').val(data.name);
+                $('#title').val(data.title);
+                $('#description').val(data.description);
+                $('#image').val(data.image);
             })
         });
 
@@ -223,7 +235,7 @@
                 // console.log(willUpdate);
                 if (willUpdate) {
                     //performReset()
-                    const postRequest = await request("/admin/user/update",
+                    const postRequest = await request("/admin/activity/update",
                         processFormInputs(
                             serializedData), 'post');
                     console.log('postRequest.message', postRequest.message);
@@ -271,14 +283,14 @@
                 //performReset()
                 performDelete(el, user_id);
             } else {
-                new swal("User record will not be deleted  :)");
+                new swal("Activity record will not be deleted  :)");
             }
         }
 
         function performDelete(el, user_id) {
             //alert(user_id);
             try {
-                $.get('{{ route('delete_users') }}?id=' + user_id,
+                $.get('{{ route('delete_activities') }}?id=' + user_id,
                     function(data, status) {
                         if (data.status === "error") {
                             new swal("Opss", data.message, "error");
