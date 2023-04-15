@@ -151,7 +151,7 @@
 
                     <div class="mb-3">
                         <label for="image" class="form-label">Date</label>
-                        <input type="date" name="date" id="date" class="form-control" required >
+                        <input type="date" name="date" id="date" min="{{$now}}" class="form-control" required >
                     </div>
                 
                 </div>
@@ -195,7 +195,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Date</label>
-                        <input type="date" name="date" id="" class="form-control" required >
+                        <input type="date" name="date" id="" min="{{$now}}" class="form-control" required >
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>

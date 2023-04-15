@@ -7,6 +7,7 @@ use function App\Helpers\success_status_code;
 use App\Models\Activity;
 use App\Models\User;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
@@ -17,6 +18,7 @@ class ActivityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
+        $data['now'] = date('Y-m-d', strtotime(now()));
         $data['activities'] = Activity::all();
         $data['users'] = User::where('user_type', 'member')->get();
         return view('activities_home', $data);
@@ -36,8 +38,10 @@ class ActivityController extends Controller
                 'pdf' => 'pdfdocument.png',
                 'doc' => 'wordicon.jpg',
             ];
-
-
+            $countCurrentDateActivity = Activity::whereDate('created_at', date('Y-m-d'))->count();
+            if($countCurrentDateActivity == 4){
+                return redirect()->back()->withErrors(['exception' => "Maximum Activity For Today Created"]); 
+            }
             $input = $request->all();
             if ($request->has('image')) {
                 $input['image'] = $pic =  time() . '.' . $request->image->extension();
