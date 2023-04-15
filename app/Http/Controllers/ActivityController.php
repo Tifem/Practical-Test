@@ -82,7 +82,8 @@ class ActivityController extends Controller
      */
     public function updateActivity(Request $request)
     { 
-       
+        $input = $request->all();
+        dd($input);
 
     }
 
