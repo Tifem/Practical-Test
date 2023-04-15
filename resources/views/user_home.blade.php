@@ -32,7 +32,6 @@
                     </div>
                     
                     <div class="table-responsive table-card mt-3 mb-1">
-                        @include('includes.alert')
                         <table class="table align-middle table-nowrap" id="customerTable">
                             <thead class="table-light">
                                 <tr>

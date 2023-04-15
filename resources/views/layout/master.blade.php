@@ -343,7 +343,27 @@
 
         <!-- App js -->
         <script src="{{asset('assets/js/app.js')}}"></script>
-
+        <script src="{{asset('swal.js')}}"></script>
+        <script>
+            @if ($errors->any())
+                Swal.fire('Oops...', "{!! implode('', $errors->all('<p>:message</p>')) !!}", 'error')
+            @endif
+    
+            @if (session()->has('message'))
+                Swal.fire(
+                'Success!',
+                "{{ session()->get('message') }}",
+                'success'
+                )
+            @endif
+            @if (session()->has('success'))
+                Swal.fire(
+                'Success!',
+                "{{ session()->get('success') }}",
+                'success'
+                )
+            @endif
+        </script>
         @yield('script')
     </body>
 
