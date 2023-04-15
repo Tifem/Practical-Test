@@ -13,16 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
 
 Auth::routes();
 Route::group(['middleware' => ['auth']], function(){
     Route::group(['middleware' => 'admin'], function () {
-        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
         Route::group(['prefix' => 'admin'], function () {
-            Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+            Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
             Route::group(['prefix' => 'user'], function () {
                 Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');
                 Route::get('/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('delete_users');
